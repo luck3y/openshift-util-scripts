@@ -4,7 +4,7 @@
 #
 
 # start cluster, if not already started
-oc cluster up 
+# oc cluster up 
 oc login -u system:admin
 
 # give the developer user cluster-admin so we can import images

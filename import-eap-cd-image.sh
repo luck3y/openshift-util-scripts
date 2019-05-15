@@ -1,10 +1,10 @@
 #!/bin/bash -x
-LPREFIX=jboss-eap-7
+LPREFIX=jboss-eap-7-tech-preview
 LNAME=eap-cd-openshift
 NAMESPACE=openshift
 NAME=eap-cd-openshift
-VERSION="14.0"
-VERSION_TAG="14"
+VERSION="15.0"
+VERSION_TAG="15"
 PORT=5000
 
 TEMPLATE_SRC=https://raw.githubusercontent.com/jboss-container-images/jboss-eap-7-openshift-image/eap-cd-dev/templates/
@@ -45,3 +45,24 @@ docker tag $LPREFIX/$LNAME:$VERSION $CLUSTER_IP:$PORT/${NAMESPACE}/$NAME:latest
 docker push $CLUSTER_IP:$PORT/${NAMESPACE}/$NAME:$VERSION
 docker push $CLUSTER_IP:$PORT/${NAMESPACE}/$NAME:$VERSION_TAG
 docker push $CLUSTER_IP:$PORT/${NAMESPACE}/$NAME:latest
+#!/bin/bash -x
+NAMESPACE=openshift
+
+for resource in \
+  eap-cd-amq-persistent-s2i.json \
+  eap-cd-amq-s2i.json \
+  eap-cd-basic-s2i.json \
+  eap-cd-https-s2i.json \
+  eap-cd-mongodb-persistent-s2i.json \
+  eap-cd-mongodb-s2i.json \
+  eap-cd-mysql-persistent-s2i.json \
+  eap-cd-mysql-s2i.json \
+  eap-cd-postgresql-persistent-s2i.json \
+  eap-cd-postgresql-s2i.json \
+  eap-cd-third-party-db-s2i.json \
+  eap-cd-tx-recovery-s2i.json \
+  eap-cd-sso-s2i.json
+do
+ oc replace -n ${NAMESPACE} --force -f ${TEMPLATE_SRC}/${resource}
+done
+
